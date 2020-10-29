@@ -1,3 +1,4 @@
+const functions = require('firebase-functions');
 const express = require('express');
 const app = express();
 const server = require('http').Server(app);
@@ -19,6 +20,8 @@ app.get('/', (req, res) => {
 app.get('/:room', (req, res) => {
     res.render('room', { roomId: req.params.room })
 });
+
+exports.app = functions.https.onRequest(app);
 
 io.on('connection', socket => {
     socket.on('join-room', (roomId, userId) => {
