@@ -17,23 +17,25 @@ navigator.mediaDevices.getUserMedia({
 }).then(stream => {
     myVideoStream = stream;
     addVideoStream(myVideo, stream);
-
-    socket.on('user-connected', (userId) => {
-        console.log('socket.on');
-        connectToNewUser(userId, myVideoStream);
-    });
 });
 
-peer.on('call', call => {
-    console.log('peer.on')
-    call.answer(myVideoStream);
-    call.on('stream', (userVideoStream) => {
-        addVideoStream(peerVideo, userVideoStream);
-    });
+
+
+socket.on('user-connected', (userId) => {
+    console.log('socket.on');
+    connectToNewUser(userId, myVideoStream);
 });
 
 peer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id);
+
+    peer.on('call', call => {
+        console.log('peer.on')
+        call.answer(myVideoStream);
+        call.on('stream', (userVideoStream) => {
+            addVideoStream(peerVideo, userVideoStream);
+        });
+    });
 });
 
 // socket.emit('join-room', ROOM_ID); 
