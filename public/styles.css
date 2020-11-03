@@ -165,7 +165,7 @@ video {
   background-color: transparent;
   color: beige;
   border: none !important;
-  font-size: 24px;
+  /* font-size: 24px; */
   outline: none !important;
 }
 
@@ -184,4 +184,11 @@ video {
 }
 .main__request button:hover {
   background-color: #353535 !important ;
+}
+
+.invitation__link a.a:active,
+a:hover,
+a:visited, a:link {
+  text-decoration: none !important;
+  color: beige !important;
 }

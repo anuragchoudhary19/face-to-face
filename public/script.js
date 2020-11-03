@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 
 const peer = new Peer(undefined, {
   host: '/',
-  port: '443',
+  port: '5000',
   path: '/peerjs',
 })
 const myPeer = {}
@@ -172,6 +172,12 @@ const createRoom = () => {
   location.assign('/create-room')
 }
 
+const invite = () => {
+  const a = document.getElementById('invitation__link')
+  a.href =
+    'mailto:peers@gmail.com?subject=You are invited to join the room&body=' +
+    location.href
+}
 const leaveGroup = () => {
   location.assign('/')
 }
