@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 
 const peer = new Peer(undefined, {
   host: '/',
-  port: '443',
+  port: '5000',
   path: '/peerjs',
 })
 const myPeer = {}
@@ -15,7 +15,7 @@ navigator.mediaDevices
   .getUserMedia({ video: true, audio: true })
   .then((stream) => {
     mystream = stream
-    addVideoStream(myVideo, stream)
+   addVideoStream(myVideo, stream)
   })
   .catch((err) => console.log(err))
 
@@ -42,7 +42,6 @@ peer.on('call', (call) => {
     .getUserMedia({ video: true, audio: true })
     .then((stream) => {
       call.answer(stream)
-      //console.log('call')
       const video = document.createElement('video')
       call.on('stream', (userVideoStream) => {
         addVideoStream(video, userVideoStream)
@@ -58,7 +57,6 @@ const addVideoStream = (video, stream) => {
   //const div = document.createElement('div')
   videoGrid.append(video)
   //div.append(video)
-  console.log('addvideostream')
 }
 
 const connectToNewUser = (id) => {
@@ -66,10 +64,11 @@ const connectToNewUser = (id) => {
     .getUserMedia({ video: true, audio: true })
     .then((stream) => {
       const call = peer.call(id, stream)
+      const video = document.createElement('video')
       call.on('stream', (userVideoStream) => {
-        const video = document.createElement('video')
+        console.log(userVideoStream)        
         addVideoStream(video, userVideoStream)
-        //lert('newuserconnected')
+        console.log('newuserconnected')
       })
       call.on('close', () => {
         video.remove()
@@ -159,7 +158,7 @@ const setVideoOff = () => {
 const requestHandler = (data) => {
   const button = document.createElement('BUTTON')
   button.classList.add('dropdown-item')
-  button.setAttribute('id',data.myId)
+  button.setAttribute('id', data.myId)
   button.setAttribute('type', button)
   button.innerHTML = data.name
   button.addEventListener('click', () => {
@@ -173,6 +172,6 @@ const createRoom = () => {
   location.assign('/create-room')
 }
 
-const leaveGroup=()=>{
+const leaveGroup = () => {
   location.assign('/')
 }
