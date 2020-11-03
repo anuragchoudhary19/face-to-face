@@ -29,14 +29,16 @@ app.use(express.static(__dirname + '/public'))
 app.use('/peerjs', peerServer)
 
 app.get('/', (req, res) => {
-  res.render('home', { roomId: 'home' })
+  const data = { roomId: 'home', status: 'offline' }
+  res.render('home', { data: data })
 })
 app.get('/create-room', (req, res) => {
   res.redirect(`/${uuidv4()}`)
 })
 
 app.get('/:room', (req, res) => {
-  res.render('home', { roomId: req.params.room })
+  const data = { roomId: req.params.room, status: 'online' }
+  res.render('home', { data: data })
 })
 
 io.on('connect', (socket) => {

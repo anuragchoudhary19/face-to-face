@@ -187,6 +187,9 @@ video {
 }
 .main__controls__button a {
   font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }
 .invitation__link a.a:active,
 a:hover,

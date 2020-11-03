@@ -37,7 +37,29 @@
                         <span>ON</span>
                     </div>
                 </div>
-                <div class="main__controls__block">
+                <div class="main__controls__block"> 
+                    <%if(data.status=="offline"){%>
+                    <div onclick='createRoom()'class='main__controls__button main__create-room'>
+                            <i class="fas fa-users"></i>
+                            <span>Create Room</span>
+                    </div>
+                       <%}else{%>
+                        <div style="color:rgba(0, 163, 0, 0.993);" class='main__controls__button main__create-room'>
+                            <i  class="fas fa-user"></i>
+                            <span>Online</span>
+                        </div>
+                       <%}%>                            
+                        
+                        <!-- <div onclick='createRoom()'class='main__controls__button main__create-room'>
+                           
+                        </div> -->
+                   
+                    <div onclick="invite()" class='main__controls__button'>                        
+                        <a id='invitation__link' class="invitation__link" >
+                            <i class="far fa-envelope"></i>
+                            <span>Invite</span>
+                        </a>
+                    </div>
                     <div class='main__controls__button'>
                         <button class="request__button fas fa-user-plus" data-toggle="dropdown"></button>
                         
@@ -46,14 +68,6 @@
                         </div>
                         <!-- <i ></i> -->
                         <span>Requests</span>
-                    </div>
-                    <div onclick='createRoom()'class='main__controls__button main__create-room'>
-                        <i class="fas fa-users"></i>
-                        <span>Create Room</span>
-                    </div>
-                    <div onclick="invite()" class='main__controls__button'>
-                        <i class="far fa-envelope"></i>
-                        <a id='invitation__link' class="invitation__link" ><span>Invite</span></a>
                     </div>
                 </div>
                 <div class="main__controls__block leave__meeting__block">

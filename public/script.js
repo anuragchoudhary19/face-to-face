@@ -179,5 +179,5 @@ const invite = () => {
     location.href
 }
 const leaveGroup = () => {
-  location.assign('/')
+  location.replace('/')
 }
