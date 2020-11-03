@@ -20,7 +20,7 @@ navigator.mediaDevices
   .catch((err) => console.log(err))
 
 peer.on('open', (id) => {
-  //console.log(id)
+  console.log(id)
   socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
 })
 
