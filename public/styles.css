@@ -51,6 +51,7 @@ video {
 }
 
 .main__controls__button {
+  font-size: 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,7 +63,7 @@ video {
 }
 
 .main__controls__button:hover {
-  background-color: darkgray;
+  background-color: rgb(65, 65, 65);
   border-radius: 5px;
 }
 

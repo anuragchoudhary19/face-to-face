@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 
 const peer = new Peer(undefined, {
   host: '/',
-  port: '443',
+  port: '5000',
   path: '/peerjs',
 })
 const myPeer = {}
@@ -19,52 +19,63 @@ navigator.mediaDevices
   })
   .catch((err) => console.log(err))
 
+peer.on('open', (id) => {
+  //console.log(id)
+  socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
+})
+
 socket.on('user-connected', (anotherPeerData) => {
-  console.log('userconnected', anotherPeerData)
-  connectToNewUser(anotherPeerData.id, mystream)
+  //console.log('userconnected', anotherPeerData)
+  //alert('userconnected')
   requestHandler(anotherPeerData)
 })
 
-peer.on('call', (call) => {
-  call.answer(mystream)
-  console.log('call')
-  const video = document.createElement('video')
-  call.on('stream', (userVideoStream) => {
-    addVideoStream(video, userVideoStream)
-  })
-})
 socket.on('user-disconnected', (userId) => {
-  if (myPeer[userId]) myPeer[userId].close()
-  console.log(userId, 'disconnect')
+  if (myPeer[userId]) {
+    myPeer[userId].close()
+  }
+  //console.log(userId, 'disconnect')
 })
+
+peer.on('call', (call) => {
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: true })
+    .then((stream) => {
+      call.answer(stream)
+      //console.log('call')
+      const video = document.createElement('video')
+      call.on('stream', (userVideoStream) => {
+        addVideoStream(video, userVideoStream)
+      })
+    })
+})
+
 const addVideoStream = (video, stream) => {
   video.srcObject = stream
   video.addEventListener('loadedmetadata', () => {
     video.play()
   })
-  const div = document.createElement('div')
-  videoGrid.append(div)
-  div.append(video)
+  //const div = document.createElement('div')
+  videoGrid.append(video)
+  //div.append(video)
   console.log('addvideostream')
 }
 
-peer.on('open', (id) => {
-  console.log(id)
-  socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
-})
-
-const connectToNewUser = (id, stream) => {
-  const call = peer.call(id, stream)
-  call.on('stream', (userVideoStream) => {
-    const video = document.createElement('video')
-    addVideoStream(video, userVideoStream)
-    console.log('connectetonewuswer')
-  })
-
-  call.on('close', () => {
-    video.remove()
-  })
-  myPeer[id] = call
+const connectToNewUser = (id) => {
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: true })
+    .then((stream) => {
+      const call = peer.call(id, stream)
+      call.on('stream', (userVideoStream) => {
+        const video = document.createElement('video')
+        addVideoStream(video, userVideoStream)
+        //lert('newuserconnected')
+      })
+      call.on('close', () => {
+        video.remove()
+      })
+      myPeer[id] = call
+    })
 }
 
 let text = $('#chat__message')
@@ -146,10 +157,22 @@ const setVideoOff = () => {
 }
 
 const requestHandler = (data) => {
-  const newRequest = `<button class="dropdown-item" type="button">${data.name}</button>`
-  $('#main__controls__request').append(newRequest)
+  const button = document.createElement('BUTTON')
+  button.classList.add('dropdown-item')
+  button.setAttribute('id',data.myId)
+  button.setAttribute('type', button)
+  button.innerHTML = data.name
+  button.addEventListener('click', () => {
+    connectToNewUser(data.myId)
+    document.getElementById(data.myId).remove()
+  })
+  document.getElementById('main__controls__request').append(button)
 }
 
 const createRoom = () => {
   location.assign('/create-room')
+}
+
+const leaveGroup=()=>{
+  location.assign('/')
 }
