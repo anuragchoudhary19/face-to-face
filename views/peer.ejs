@@ -45,8 +45,8 @@
                             <span>Create Room</span>
                     </div>
                        <%}else{%> -->
-                        <div onclick="join()" style="color:rgba(0, 163, 0, 0.993);" class='main__controls__button main__create-room'>
-                            <i  class="fas fa-user"></i>
+                        <div onclick="join()" class='main__controls__button main__create-room'>
+                            <i class="fas fa-user"></i>
                             <span>Join</span>
                         </div>
                        <!-- <%}%>                             -->
@@ -61,14 +61,15 @@
                             <span>Invite</span>
                         </a>
                     </div>
-                    <div class='main__controls__button'>
-                        <button class="request__button fas fa-user-plus" data-toggle="dropdown"></button>
+                    <div id='request__button' class='main__controls__button'>
+                       
                         
+                        <button id='request__button' class="request__button fas fa-user-friends" data-toggle="dropdown"></button>
                         <div id='main__controls__request' class="dropdown-menu main__request">
 
                         </div>
                         <!-- <i ></i> -->
-                        <span id='main_request'>Requests</span>
+                        <span>Requests</span>
                     </div>
                 </div>
                 <div class="main__controls__block leave__meeting__block">

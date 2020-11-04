@@ -3,7 +3,7 @@ const videoGrid = document.getElementById('video-grid')
 let request = 0
 const peer = new Peer(undefined, {
   host: '/',
-  port: '5000',
+  port: '443',
   path: '/peerjs',
 })
 const myPeer = {}
@@ -21,7 +21,9 @@ navigator.mediaDevices
 // if (status == 'offline' || status == 'online') {
 peer.on('open', (id) => {
   //console.log(id)
-  socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
+  if (ROOM_ID != 'home' && status != 'join') {
+    socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
+  }
 })
 // }
 
