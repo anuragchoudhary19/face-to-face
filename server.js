@@ -30,15 +30,19 @@ app.use('/peerjs', peerServer)
 
 app.get('/', (req, res) => {
   const data = { roomId: 'home', status: 'offline' }
-  res.render('home', { data: data })
+  res.render('admin', { data: data })
 })
 app.get('/create-room', (req, res) => {
   res.redirect(`/${uuidv4()}`)
 })
-
+app.get('/join', (req, res) => {
+  console.log(req.query.roomid)
+  const data = { roomId: req.query.roomid, status: 'join' }
+  res.render('peer', { data: data })
+})
 app.get('/:room', (req, res) => {
   const data = { roomId: req.params.room, status: 'online' }
-  res.render('home', { data: data })
+  res.render('admin', { data: data })
 })
 
 io.on('connect', (socket) => {
@@ -53,15 +57,16 @@ io.on('connect', (socket) => {
     //     roomId: data.ROOM_ID,
     //   },
     // )
-
-    socket.join(data.ROOM_ID)
-    socket.to(data.ROOM_ID).emit('user-connected', data)
-    socket.on('message', (message) => {
-      io.to(data.ROOM_ID).emit('createMessage', message)
-    })
-    socket.on('disconnect', () => {
-      socket.to(data.ROOM_ID).broadcast.emit('user-disconnected', data.id)
-    })
+    if (data.ROOM_ID != 'home') {
+      socket.join(data.ROOM_ID)
+      socket.to(data.ROOM_ID).emit('user-connected', data)
+      socket.on('message', (message) => {
+        io.to(data.ROOM_ID).emit('createMessage', message)
+      })
+      socket.on('disconnect', () => {
+        socket.to(data.ROOM_ID).broadcast.emit('user-disconnected', data.id)
+      })
+    }
   })
 })
 

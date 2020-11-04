@@ -163,7 +163,7 @@ video {
 
 .request__button {
   background-color: transparent;
-  color: beige;
+  color: inherit;
   border: none !important;
   /* font-size: 24px; */
   outline: none !important;
@@ -197,4 +197,25 @@ a:visited,
 a:link {
   text-decoration: none !important;
   color: beige !important;
+}
+
+.fa-user-friends{
+  position: relative;
+}
+
+.fa-square{
+  position: absolute;
+  font-size: 18px !important;
+  width: 3px;
+  height: 2px;
+  z-index: 1;
+  top: -3px;
+  right: 5px;
+}
+.num{
+  position: absolute;
+  color:black;
+  right: -9px;
+  top: 1px;
+  font-size: 15px !important;
 }

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Face To Face</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
@@ -16,6 +16,7 @@
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="/script.js" defer></script>  
     <%- include('partials/room')%>
+    <%- include('partials/join')%>
 </head>
 
 <body>
@@ -38,17 +39,17 @@
                     </div>
                 </div>
                 <div class="main__controls__block"> 
-                    <%if(data.status=="offline"){%>
+                    <!-- <%if(data.status=="offline"){%>
                     <div onclick='createRoom()'class='main__controls__button main__create-room'>
                             <i class="fas fa-users"></i>
                             <span>Create Room</span>
                     </div>
-                       <%}else{%>
-                        <div style="color:rgba(0, 163, 0, 0.993);" class='main__controls__button main__create-room'>
+                       <%}else{%> -->
+                        <div onclick="join()" style="color:rgba(0, 163, 0, 0.993);" class='main__controls__button main__create-room'>
                             <i  class="fas fa-user"></i>
-                            <span>Online</span>
+                            <span>Join</span>
                         </div>
-                       <%}%>                            
+                       <!-- <%}%>                             -->
                         
                         <!-- <div onclick='createRoom()'class='main__controls__button main__create-room'>
                            
@@ -67,7 +68,7 @@
 
                         </div>
                         <!-- <i ></i> -->
-                        <span>Requests</span>
+                        <span id='main_request'>Requests</span>
                     </div>
                 </div>
                 <div class="main__controls__block leave__meeting__block">

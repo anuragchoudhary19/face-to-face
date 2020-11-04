@@ -1,9 +1,9 @@
 const socket = io('/')
 const videoGrid = document.getElementById('video-grid')
-
+let request = 0
 const peer = new Peer(undefined, {
   host: '/',
-  port: '443',
+  port: '5000',
   path: '/peerjs',
 })
 const myPeer = {}
@@ -18,16 +18,25 @@ navigator.mediaDevices
     addVideoStream(myVideo, stream)
   })
   .catch((err) => console.log(err))
-
+// if (status == 'offline' || status == 'online') {
 peer.on('open', (id) => {
   //console.log(id)
   socket.emit('join-room', { ROOM_ID: ROOM_ID, myId: id, name: 'userName' })
 })
+// }
 
 socket.on('user-connected', (anotherPeerData) => {
   //console.log('userconnected', anotherPeerData)
   //alert('userconnected')
+  request += 1
   requestHandler(anotherPeerData)
+  var html = `<i id="notification" class="fas fa-square"><span class="num"></span></i>`
+  $('.request__button').append(html)
+  var el = document.getElementsByClassName('fa-square')
+  el[0].setAttribute('style', 'color:#DC143C !important')
+  var num = document.getElementsByClassName('num')
+  num[0].setAttribute('style', 'color:#F5F5DC !important')
+  num[0].innerHTML = '1'
 })
 
 socket.on('user-disconnected', (userId) => {
@@ -75,6 +84,14 @@ const connectToNewUser = (id) => {
       })
       myPeer[id] = call
     })
+  request -= 1
+  if (request == 0) {
+    $('#notification').remove()
+    // var el = document.getElementsByClassName('fa-square')
+    // el[0].setAttribute('style', 'color:#F5F5DC !important')
+    // var num = document.getElementsByClassName('num')
+    // num[0].innerHTML = ''
+  }
 }
 
 let text = $('#chat__message')
@@ -173,11 +190,17 @@ const createRoom = () => {
 }
 
 const invite = () => {
-  const a = document.getElementById('invitation__link')
-  a.href =
-    'mailto:peers@gmail.com?subject=You are invited to join the room&body=' +
-    location.href
+  let a = document.getElementById('invitation__link')
+  let url = new URL(location.href)
+  let params = new URLSearchParams({ roomid: ROOM_ID })
+  // params.set('room-id', ROOM_ID)
+  // params.set('join', 'join-room')
+  let newUrl = location.host + '/join/' + '?' + params.toString()
+  a.href = 'mailto:?subject=You are invited to join the room&body=' + newUrl
 }
 const leaveGroup = () => {
   location.replace('/')
+}
+const join = () => {
+  location.assign('/' + ROOM_ID)
 }
